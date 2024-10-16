@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tel.Web", "Tel.Web\Tel.Web.csproj", "{9BDE4F00-91C5-46C7-ABE4-2C3D1E7F17D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Items", "Items", "{777DC6D6-DF50-4481-8E54-73195A612C14}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		global.json = global.json
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tel.Weather", "Tel.Weather\Tel.Weather.csproj", "{86AD6B9F-C816-4ED1-ABB5-E0D304071156}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9BDE4F00-91C5-46C7-ABE4-2C3D1E7F17D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BDE4F00-91C5-46C7-ABE4-2C3D1E7F17D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BDE4F00-91C5-46C7-ABE4-2C3D1E7F17D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BDE4F00-91C5-46C7-ABE4-2C3D1E7F17D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86AD6B9F-C816-4ED1-ABB5-E0D304071156}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86AD6B9F-C816-4ED1-ABB5-E0D304071156}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86AD6B9F-C816-4ED1-ABB5-E0D304071156}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86AD6B9F-C816-4ED1-ABB5-E0D304071156}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

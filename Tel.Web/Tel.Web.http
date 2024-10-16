@@ -1,0 +1,6 @@
+@Tel_Address = http://localhost:5268
+
+GET {{Tel_Address}}/weather?forecastDate=2024-10-16
+Accept: application/json
+
+###
