@@ -1,0 +1,8 @@
+services:
+  otelcol:
+    image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.111.0
+    volumes:
+      - ./otelcol-config.yaml:/etc/otelcol-contrib/config.yaml:ro
+    ports:
+      - "4318:4318" 
+    restart: unless-stopped
