@@ -1,23 +1,20 @@
-using Microsoft.Extensions.Logging.Console;
-
 using Tel.Weather;
+using Tel.Web;
 using Tel.Web.Endpoints.Weather;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
+
+// using var loggerFactory = LoggerFactory.Create(bld => bld.UseSimpleLogger());
+//
+// var startupLogger = loggerFactory.CreateLogger<Program>();
+
+builder.Logging.UseSimpleLogger();
+
+builder.UseOpenTelemetry();
 
 builder.Services.AddWeatherServices();
 
-builder.Logging.ClearProviders();
-builder.Logging.AddSimpleConsole(opts =>
-{
-    opts.SingleLine = true;
-    opts.IncludeScopes = false;
-    opts.UseUtcTimestamp = true;
-    opts.TimestampFormat="yyyy-MM-dd HH:mm:ss";
-    opts.ColorBehavior = LoggerColorBehavior.Disabled;
-});
-
-WebApplication app = builder.Build();
+var app = builder.Build();
 
 app.MapWeatherEndpoints();
 

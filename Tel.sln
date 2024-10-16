@@ -8,6 +8,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Items", "Items", "{777DC6D6
 		.gitignore = .gitignore
 		global.json = global.json
 		Directory.Build.props = Directory.Build.props
+		docker-compose.yaml = docker-compose.yaml
+		otelcol-config.yaml = otelcol-config.yaml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tel.Weather", "Tel.Weather\Tel.Weather.csproj", "{86AD6B9F-C816-4ED1-ABB5-E0D304071156}"

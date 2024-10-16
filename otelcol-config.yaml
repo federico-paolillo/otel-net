@@ -2,17 +2,23 @@ receivers:
   otlp:
     protocols:
       http:
-        endpoint: "0.0.0.0:4318"
-
+        endpoint: 0.0.0.0:4318
+        
 exporters:
   debug:
     verbosity: normal
 
 service:
+  telemetry:
+    logs:
+      level: DEBUG
+    metrics:
+      level: detailed
+      address: 0.0.0.0:8888
   pipelines:
     traces:
-      receivers: [otlp]
-      exporters: [debug]
+      receivers: [ otlp ]
+      exporters: [ debug ]
     logs:
-      receivers: [otlp]
-      exporters: [debug]
+      receivers: [ otlp ]
+      exporters: [ debug ]

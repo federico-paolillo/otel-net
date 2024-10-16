@@ -4,4 +4,18 @@
         <ProjectReference Include="..\Tel.Weather\Tel.Weather.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <PackageReference Include="OpenTelemetry" Version="1.9.0"/>
+        <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.9.0" />
+        <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.9.0"/>
+        <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.9.0"/>
+        <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.9.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="OTEL_DIAGNOSTICS.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>

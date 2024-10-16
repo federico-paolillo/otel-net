@@ -73,6 +73,7 @@ dotnet_code_quality_unused_parameters = all:suggestion
 
 # Suppression preferences
 dotnet_remove_unnecessary_suppression_exclusions = none
+dotnet_diagnostic.CA1848.severity = none
 
 #### C# Coding Conventions ####
 [*.cs]

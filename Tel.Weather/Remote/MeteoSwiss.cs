@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+
 namespace Tel.Weather.Remote;
 
 public sealed class MeteoSwiss : IRemoteMeteoService

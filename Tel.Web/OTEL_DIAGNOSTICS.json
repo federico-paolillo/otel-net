@@ -1,0 +1,5 @@
+{
+  "LogDirectory": ".",
+  "FileSize": 10240,
+  "LogLevel": "Informational"
+}
