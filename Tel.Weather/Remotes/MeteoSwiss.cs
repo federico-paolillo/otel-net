@@ -6,6 +6,8 @@ public sealed class MeteoSwiss : IRemoteMeteoService
     {
         if (City.Defaults.Contains(city))
         {
+            Thread.Sleep(Random.Shared.Next(0, 100));
+            
             return RandomForecast(forecastDate, city);
         }
 

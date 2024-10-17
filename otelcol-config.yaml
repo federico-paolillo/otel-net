@@ -2,11 +2,13 @@ receivers:
   otlp:
     protocols:
       http:
-        endpoint: 0.0.0.0:4318
+        endpoint: 0.0.0.0:40318
         
 exporters:
   debug:
     verbosity: normal
+  otlphttp:
+    endpoint: http://lgtm:4318
 
 service:
   telemetry:
@@ -15,7 +17,7 @@ service:
   pipelines:
     traces:
       receivers: [ otlp ]
-      exporters: [ debug ]
+      exporters: [ debug, otlphttp ]
     logs:
       receivers: [ otlp ]
-      exporters: [ debug ]
+      exporters: [ debug, otlphttp ]

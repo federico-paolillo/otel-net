@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <ItemGroup>
+        <ProjectReference Include="..\Tel.Instrument\Tel.Instrument.csproj" />
         <ProjectReference Include="..\Tel.Weather\Tel.Weather.csproj"/>
     </ItemGroup>
 

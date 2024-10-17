@@ -4,6 +4,9 @@ services:
     volumes:
       - ./otelcol-config.yaml:/etc/otelcol-contrib/config.yaml:ro
     ports:
-      - "4318:4318"
-      - "8888:8888"
+      - "40318:40318"
     restart: unless-stopped
+  lgtm:
+    image: grafana/otel-lgtm:0.7.5
+    ports:
+      - "40300:3000"

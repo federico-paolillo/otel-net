@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Items", "Items", "{777DC6D6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tel.Weather", "Tel.Weather\Tel.Weather.csproj", "{86AD6B9F-C816-4ED1-ABB5-E0D304071156}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tel.Instrument", "Tel.Instrument\Tel.Instrument.csproj", "{CD8F2A9A-3633-48FB-9290-C29325EFC70C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,5 +30,9 @@ Global
 		{86AD6B9F-C816-4ED1-ABB5-E0D304071156}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86AD6B9F-C816-4ED1-ABB5-E0D304071156}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86AD6B9F-C816-4ED1-ABB5-E0D304071156}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD8F2A9A-3633-48FB-9290-C29325EFC70C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD8F2A9A-3633-48FB-9290-C29325EFC70C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD8F2A9A-3633-48FB-9290-C29325EFC70C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD8F2A9A-3633-48FB-9290-C29325EFC70C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
