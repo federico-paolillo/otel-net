@@ -12,9 +12,6 @@ service:
   telemetry:
     logs:
       level: DEBUG
-    metrics:
-      level: detailed
-      address: 0.0.0.0:8888
   pipelines:
     traces:
       receivers: [ otlp ]

@@ -7,7 +7,10 @@ namespace Tel.Web;
 
 public static class OpenTelemetry
 {
-    public static WebApplicationBuilder UseOpenTelemetry(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder UseOpenTelemetry(
+        this WebApplicationBuilder builder,
+        ILogger logger
+    )
     {
         Configuration.OpenTelemetry? cfg = builder.Configuration
             .GetSection(Configuration.OpenTelemetry.Section)
@@ -18,8 +21,8 @@ public static class OpenTelemetry
             throw new InvalidOperationException("Missing OpenTelemetry configuration");
         }
 
-        // startupLogger.LogInformation("Logs will be exported to {Uri}", cfg.Logging.Endpoint);
-
+        Extensions.LogMessages.LogsExportedAt(logger, cfg.Logging.Endpoint);
+        
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(bld =>
             {
@@ -31,7 +34,12 @@ public static class OpenTelemetry
                 {
                     opts.ExportProcessorType = ExportProcessorType.Simple;
                     opts.Protocol = OtlpExportProtocol.HttpProtobuf;
+                    opts.Endpoint = cfg.Logging.Endpoint;
+                    opts.TimeoutMilliseconds = cfg.Logging.ExportTimeout;
                 });
+            }, opts =>
+            {
+                opts.IncludeScopes = true;
             });
 
         return builder;

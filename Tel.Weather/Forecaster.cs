@@ -1,22 +1,19 @@
 ﻿using Microsoft.Extensions.Logging;
 
-using Tel.Weather.Remote;
+using Tel.Weather.Remotes;
 
 namespace Tel.Weather;
 
-public sealed class Forecaster
+public sealed class Forecaster(
+    IRemoteMeteoService remoteMeteoService,
+    ILogger<Forecaster> logger
+)
 {
-    private readonly IRemoteMeteoService _remoteMeteoService;
-    private readonly ILogger<Forecaster> _logger;
+    private readonly IRemoteMeteoService _remoteMeteoService =
+        remoteMeteoService ?? throw new ArgumentNullException(nameof(remoteMeteoService));
 
-    public Forecaster(
-        IRemoteMeteoService remoteMeteoService,
-        ILogger<Forecaster> logger
-    )
-    {
-        _remoteMeteoService = remoteMeteoService ?? throw new ArgumentNullException(nameof(remoteMeteoService));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+    private readonly ILogger<Forecaster> _logger =
+        logger ?? throw new ArgumentNullException(nameof(logger));
 
     public IReadOnlyList<Forecast> GetForecasts(DateOnly when)
     {
@@ -35,14 +32,14 @@ public sealed class Forecaster
 
         foreach (City city in cities)
         {
-            _logger.LogInformation("Pretending to fetch weather forecast for city: '{City}'", city.Value);
+            Extensions.LogMessages.FetchingWeatherForecast(_logger, city);
 
             Forecast? maybeForecast = _remoteMeteoService.GetForecast(when, city);
 
             if (maybeForecast is null)
             {
-                _logger.LogWarning("No weather forecast returned for '{City}'", city.Value);
-                
+                Extensions.LogMessages.NoWeatherForecast(_logger, city);
+
                 continue;
             }
 
