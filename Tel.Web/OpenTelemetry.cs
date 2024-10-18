@@ -38,6 +38,10 @@ public static class OpenTelemetry
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(bld =>
             {
+                // Omnipresent and immutable attributes and service identity should be modeled as a Resource
+                // See: https://github.com/open-telemetry/opentelemetry-dotnet/blob/main/docs/trace/customizing-the-sdk/README.md#resource
+                // See: https://opentelemetry.io/docs/specs/otel/resource/sdk/ 
+                
                 bld.AddService("Tel.Web");
             })
             // This will ensure registration of a LoggingProvider plugged into OpenTelemetry
@@ -70,7 +74,7 @@ public static class OpenTelemetry
                     opts.Endpoint = cfg.Tracing.Endpoint;
                     opts.TimeoutMilliseconds = cfg.Tracing.ExportTimeout;
                 })
-                .AddSource("Tel.Web")
+                .AddSource(Instrumentation.SourceName)
                 .SetSampler(new AlwaysOnSampler());
             });
 
