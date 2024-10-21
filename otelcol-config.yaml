@@ -14,6 +14,15 @@ service:
   telemetry:
     logs:
       level: DEBUG
+    metrics:
+      readers:
+        - periodic:
+            interval: 1000
+            exporter:
+              otlp:
+                endpoint: http://lgtm:4318/v1/metrics
+                protocol: http/protobuf
+                
   pipelines:
     traces:
       receivers: [ otlp ]
