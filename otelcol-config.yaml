@@ -3,7 +3,7 @@ receivers:
     protocols:
       http:
         endpoint: 0.0.0.0:40318
-        
+
 exporters:
   debug:
     verbosity: normal
@@ -22,11 +22,14 @@ service:
               otlp:
                 endpoint: http://lgtm:4318/v1/metrics
                 protocol: http/protobuf
-                
+  
   pipelines:
     traces:
       receivers: [ otlp ]
       exporters: [ debug, otlphttp ]
     logs:
+      receivers: [ otlp ]
+      exporters: [ debug, otlphttp ]
+    metrics:
       receivers: [ otlp ]
       exporters: [ debug, otlphttp ]

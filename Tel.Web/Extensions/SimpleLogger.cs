@@ -7,7 +7,7 @@ public static class SimpleLogger
     public static void UseSimpleLogger(this ILoggingBuilder builder)
     {
         // It is a goal of this demo to offer simple logs to stdout and hide OTEL signals from sight
-        
+
         builder.ClearProviders();
         builder.AddSimpleConsole(opts =>
         {

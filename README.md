@@ -23,7 +23,6 @@ Grafana will be available (after a short while) on `localhost:40300`. Use `admin
 - Source code commentary with links to reading resources
 - _TODO_ Exemplars
 - _TODO_ Samplers
-- _TODO_ Metrics
 
 ## Pictures
 
@@ -39,9 +38,13 @@ _Application logs_
 
 ![Application logs](imgs/loki.png)
 
-_OpenTelemetry Collector metrics_
+_Application metrics_
 
 ![Application metrics](imgs/prom.png)
+
+_OpenTelemetry Collector metrics_
+
+![Application metrics](imgs/otelcol.png)
 
 ## Side notes
 

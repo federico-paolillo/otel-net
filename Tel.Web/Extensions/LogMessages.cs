@@ -4,16 +4,10 @@ internal static partial class LogMessages
 {
     [LoggerMessage(LogLevel.Information, "Starting host...")]
     public static partial void HostStarting(this ILogger logger);
-    
+
     [LoggerMessage(LogLevel.Warning, "Quitting host...")]
     public static partial void HostQuitting(this ILogger logger);
-    
+
     [LoggerMessage(LogLevel.Critical, "Host has failed")]
     public static partial void HostFailure(this ILogger logger, Exception ex);
-    
-    [LoggerMessage(LogLevel.Information, "Logs will be exported to {Uri}")]
-    public static partial void LogsExportedAt(this ILogger logger, Uri uri);
-    
-    [LoggerMessage(LogLevel.Information, "Traces will be exported to {Uri}")]
-    public static partial void TracesExportedAt(this ILogger logger, Uri uri);
 }

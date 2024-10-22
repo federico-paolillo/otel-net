@@ -14,15 +14,6 @@ public sealed class Forecaster(
     Instrumentation instrumentation
 )
 {
-    private readonly IRemoteMeteoService _remoteMeteoService =
-        remoteMeteoService ?? throw new ArgumentNullException(nameof(remoteMeteoService));
-
-    private readonly ILogger<Forecaster> _logger =
-        logger ?? throw new ArgumentNullException(nameof(logger));
-
-    private readonly Instrumentation _instrumentation =
-        instrumentation ?? throw new ArgumentNullException(nameof(instrumentation));
-
     public IReadOnlyList<Forecast> GetForecasts(DateOnly when)
     {
         // One city (Berlin) will not have any data
@@ -34,10 +25,10 @@ public sealed class Forecaster(
             new("Montevideo")
         ];
 
-        using var gettingForecastsActivity = instrumentation.ActivitySource
+        using Activity? gettingForecastsActivity = instrumentation.ActivitySource
             .StartActivity("getting weather forecasts");
 
-        for (var i = 0; i < cities.Length; i++)
+        for (int i = 0; i < cities.Length; i++)
         {
             gettingForecastsActivity?.AddTag($"city_{i:D}", cities[i].Value);
         }
@@ -46,23 +37,25 @@ public sealed class Forecaster(
 
         foreach (City city in cities)
         {
-            using var getCityForecastsActivity = instrumentation.ActivitySource
+            using Activity? getCityForecastsActivity = instrumentation.ActivitySource
                 .StartActivity($"getting weather for '{city.Value}'");
-            
-            _logger.FetchingWeatherForecast(city);
 
-            var maybeForecast = _remoteMeteoService.GetForecast(when, city);
+            logger.FetchingWeatherForecast(city);
+
+            Forecast? maybeForecast = remoteMeteoService.GetForecast(when, city);
 
             if (maybeForecast is null)
             {
-                _logger.NoWeatherForecast(city);
-                
+                logger.NoWeatherForecast(city);
+
                 getCityForecastsActivity?.SetStatus(ActivityStatusCode.Error, "no weather forecast");
 
                 continue;
             }
 
             forecasts.Add(maybeForecast);
+
+            instrumentation.WheaterRequests.Add(1);
         }
 
         return forecasts;
