@@ -48,9 +48,9 @@ _OpenTelemetry Collector metrics_
 
 ## Side notes
 
-**Do not use plain HTTP in production, is too slow. Use gRPC when possible**
+⚠️ **Do not use plain HTTP in production, it is too slow. Use gRPC when possible**
 
-**There are two OpenTelemetry Collectors: one from Grafana LGTM and one configured explicity. This setup is whack, good for demonstration purposes only. In production, use one OpenTelemetry Collector**
+⚠️ **There are two OpenTelemetry Collectors: one baked in Grafana LGTM container and one configured explicity. This setup is whack! Good for demonstration purposes only! In production, use one OpenTelemetry Collector**
 
 ### Seemingly double metrics
 
