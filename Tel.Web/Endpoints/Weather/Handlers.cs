@@ -8,7 +8,6 @@ namespace Tel.Web.Endpoints.Weather;
 public static class WeatherHandlers
 {
     public static Ok<ForecastDto[]> GetWeather(
-        HttpContext _,
         Forecaster forecaster,
         DateOnly forecastDate
     )

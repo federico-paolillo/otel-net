@@ -26,11 +26,15 @@ public sealed class Forecaster(
         ];
 
         using Activity? gettingForecastsActivity = instrumentation.ActivitySource
-            .StartActivity("getting weather forecasts");
+            .StartActivity("weather.forecasts.get");
 
-        for (int i = 0; i < cities.Length; i++)
+        if (gettingForecastsActivity?.IsAllDataRequested == true)
         {
-            gettingForecastsActivity?.AddTag($"city_{i:D}", cities[i].Value);
+            // Span names and attribute keys should be stable and low-cardinality
+            // See: https://opentelemetry.io/docs/specs/otel/trace/api/
+            // See: https://opentelemetry.io/docs/specs/semconv/general/naming/
+
+            gettingForecastsActivity.SetTag("tel.weather.city.count", cities.Length);
         }
 
         List<Forecast> forecasts = [];
@@ -38,7 +42,12 @@ public sealed class Forecaster(
         foreach (City city in cities)
         {
             using Activity? getCityForecastsActivity = instrumentation.ActivitySource
-                .StartActivity($"getting weather for '{city.Value}'");
+                .StartActivity("weather.forecast.get");
+
+            if (getCityForecastsActivity?.IsAllDataRequested == true)
+            {
+                getCityForecastsActivity.SetTag("tel.weather.city.name", city.Value);
+            }
 
             logger.FetchingWeatherForecast(city);
 
@@ -55,7 +64,7 @@ public sealed class Forecaster(
 
             forecasts.Add(maybeForecast);
 
-            instrumentation.WheaterRequests.Add(1);
+            instrumentation.ForecastsProduced.Add(1);
         }
 
         return forecasts;

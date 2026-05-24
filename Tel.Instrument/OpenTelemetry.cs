@@ -21,14 +21,7 @@ public static class OpenTelemetry
         ILogger logger
     )
     {
-        Configuration.OpenTelemetry? cfg = builder.Configuration
-            .GetSection(Configuration.OpenTelemetry.Section)
-            .Get<Configuration.OpenTelemetry>();
-
-        if (cfg is null)
-        {
-            throw new InvalidOperationException("Missing OpenTelemetry configuration");
-        }
+        Configuration.OpenTelemetry cfg = GetOpenTelemetryConfiguration(builder.Configuration);
 
         // OTLP Exporter endpoints should contain /v1/[logs,traces,metrics]
         // When touching OltpExporterOptions.Endpoint it will not be added automatically
@@ -105,5 +98,77 @@ public static class OpenTelemetry
         builder.Services.AddSingleton<Instrumentation>();
 
         return builder;
+    }
+
+    private static Configuration.OpenTelemetry GetOpenTelemetryConfiguration(IConfiguration configuration)
+    {
+        Configuration.OpenTelemetry? cfg = configuration
+            .GetSection(Configuration.OpenTelemetry.Section)
+            .Get<Configuration.OpenTelemetry>();
+
+        if (cfg is null)
+        {
+            throw new InvalidOperationException("Missing OpenTelemetry configuration");
+        }
+
+        // Validate configuration at startup so invalid exporter endpoints fail before the app starts
+        // See: https://learn.microsoft.com/en-us/dotnet/core/extensions/options#options-validation
+        // See: https://opentelemetry.io/docs/concepts/sdk-configuration/otlp-exporter-configuration/
+
+        ValidateSignalConfiguration(nameof(cfg.Logging), cfg.Logging.Endpoint, cfg.Logging.ExportTimeout, "/v1/logs");
+        ValidateSignalConfiguration(nameof(cfg.Tracing), cfg.Tracing.Endpoint, cfg.Tracing.ExportTimeout, "/v1/traces");
+        ValidateSignalConfiguration(nameof(cfg.Metrics), cfg.Metrics.Endpoint, cfg.Metrics.ExportTimeout, "/v1/metrics");
+
+        return cfg;
+    }
+
+    private static void ValidateSignalConfiguration(
+        string signalName,
+        Uri endpoint,
+        int exportTimeout,
+        string expectedPath
+    )
+    {
+        if (!endpoint.IsAbsoluteUri)
+        {
+            throw new InvalidOperationException(
+                $"OpenTelemetry {signalName} endpoint must be an absolute URI"
+            );
+        }
+
+        if (endpoint.Scheme is not "http" and not "https")
+        {
+            throw new InvalidOperationException(
+                $"OpenTelemetry {signalName} endpoint must use HTTP or HTTPS"
+            );
+        }
+
+        if (string.IsNullOrWhiteSpace(endpoint.Host))
+        {
+            throw new InvalidOperationException(
+                $"OpenTelemetry {signalName} endpoint must include a host"
+            );
+        }
+
+        if (!string.Equals(endpoint.AbsolutePath, expectedPath, StringComparison.Ordinal))
+        {
+            throw new InvalidOperationException(
+                $"OpenTelemetry {signalName} endpoint must end with {expectedPath}"
+            );
+        }
+
+        if (!string.IsNullOrEmpty(endpoint.Query) || !string.IsNullOrEmpty(endpoint.Fragment))
+        {
+            throw new InvalidOperationException(
+                $"OpenTelemetry {signalName} endpoint must not include a query string or fragment"
+            );
+        }
+
+        if (exportTimeout <= 0)
+        {
+            throw new InvalidOperationException(
+                $"OpenTelemetry {signalName} export timeout must be greater than zero"
+            );
+        }
     }
 }

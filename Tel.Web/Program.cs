@@ -22,19 +22,21 @@ builder.Services.AddWeatherServices();
 
 WebApplication app = builder.Build();
 
+ILogger<Program> applicationLogger = app.Services.GetRequiredService<ILogger<Program>>();
+
 app.MapWeatherEndpoints();
 
 try
 {
-    startupLogger.HostStarting();
+    applicationLogger.HostStarting();
 
     app.Run();
 
-    startupLogger.HostQuitting();
+    applicationLogger.HostQuitting();
 }
 catch (Exception ex)
 {
-    startupLogger.HostFailure(ex);
+    applicationLogger.HostFailure(ex);
 
     Environment.Exit(1);
 }

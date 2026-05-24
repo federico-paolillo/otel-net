@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="docker-compose.yaml" />
+    <File Path="global.json" />
+    <File Path="otelcol-config.yaml" />
+  </Folder>
+  <Project Path="Tel.Instrument/Tel.Instrument.csproj" />
+  <Project Path="Tel.Weather/Tel.Weather.csproj" />
+  <Project Path="Tel.Web/Tel.Web.csproj" />
+</Solution>

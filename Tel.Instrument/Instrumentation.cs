@@ -10,7 +10,7 @@ public sealed class Instrumentation : IDisposable
     // See: https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/docs/trace#common-issues-that-lead-to-missing-traces
     // See: https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/docs/trace/customizing-the-sdk#activity-source
 
-    public const string SourceName = "Tel.Web";
+    public const string SourceName = "Tel.Weather";
 
     // In .NET, you must use the Metrics API to emit metrics. No shims are provided
     // See: https://github.com/open-telemetry/opentelemetry-dotnet/blob/main/docs/metrics/README.md#package-version
@@ -28,21 +28,33 @@ public sealed class Instrumentation : IDisposable
         // It is recommended to have a very long living Activity Source per application
         // See: https://github.com/open-telemetry/opentelemetry-dotnet/tree/cddc09127f49143de1dc54800b65b710c1f6056d/docs/trace#activitysource
         // See: https://opentelemetry.io/docs/languages/net/instrumentation/#setting-up-an-activitysource
+        // See: https://opentelemetry.io/docs/languages/dotnet/traces/best-practices/
 
         ActivitySource = new ActivitySource(SourceName);
 
         // Instruments should be created at most once and kept around
         // See: https://github.com/open-telemetry/opentelemetry-dotnet/blob/main/docs/metrics/README.md#instruments
+        // See: https://opentelemetry.io/docs/languages/dotnet/metrics/best-practices/
+
         // Choose the best instrument according to the use case:
         // See: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/supplementary-guidelines.md#instrument-selection
         // See: https://github.com/open-telemetry/opentelemetry-dotnet/blob/main/docs/metrics/README.md#instruments
         // See: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/api.md#general-operations
+
         // You should avoid invalid instrument names. OTEL will ignore them
         // See: https://github.com/open-telemetry/opentelemetry-dotnet/blob/main/docs/metrics/README.md#instruments
         // See: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/api.md#instrument-name-syntax
 
-        WheaterRequests =
-            _meter.CreateCounter<int>("wheater_requests", description: "number of wheater requests completed");
+        // Custom metric names should use a stable application namespace and units should be UCUM annotations
+        // See: https://opentelemetry.io/docs/specs/semconv/general/naming/
+        // See: https://opentelemetry.io/docs/specs/semconv/general/metrics/
+
+        ForecastsProduced =
+            _meter.CreateCounter<int>(
+                "tel.weather.forecasts",
+                unit: "{forecast}",
+                description: "number of weather forecasts produced"
+            );
     }
 
     // In .NET, it is recommended to use the Activity API to Trace
@@ -58,7 +70,7 @@ public sealed class Instrumentation : IDisposable
 
     public ActivitySource ActivitySource { get; }
 
-    public Counter<int> WheaterRequests { get; }
+    public Counter<int> ForecastsProduced { get; }
 
     public void Dispose()
     {

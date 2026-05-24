@@ -1,6 +1,6 @@
 # OpenTelemetry with .NET
 
-The tiniest example I could think of. Good as template.
+The tiniest local-learning example I could think of.
 
 ## Run
 
@@ -48,9 +48,19 @@ _OpenTelemetry Collector metrics_
 
 ## Side notes
 
-⚠️ **Do not use plain HTTP in production, it is too slow. Use gRPC when possible**
+### Pitfalls
 
-⚠️ **There are two OpenTelemetry Collectors: one baked in Grafana LGTM container and one configured explicity. This setup is whack! Good for demonstration purposes only! In production, use one OpenTelemetry Collector**
+This example uses OTLP over plain HTTP/protobuf because it keeps local traffic easy to inspect. Both `http/protobuf` and `grpc` are valid OTLP transports; production choices should be based on TLS, authentication, backend support, and deployment topology. [See the official OTLP exporter configuration documentation](https://opentelemetry.io/docs/concepts/sdk-configuration/otlp-exporter-configuration/).
+
+Standard ASP.NET Core HTTP metrics are intentionally not registered in this example to de-noise the output and keep attention on one custom metric. [See the official OpenTelemetry .NET metrics documentation](https://opentelemetry.io/docs/languages/dotnet/metrics/) for normal metrics instrumentation.
+
+The explicit Collector pipelines intentionally omit [`batch`](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md) and [`memory_limiter`](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md) processors to make local signal visibility fast. These processors are normal production hardening components. [See the official Collector processor documentation](https://opentelemetry.io/docs/collector/components/processor/).
+
+There are two OpenTelemetry Collectors: one baked in the Grafana LGTM container and one configured explicitly. This setup is for demonstration only. In production, use one deliberate Collector topology. [See the official Collector configuration documentation](https://opentelemetry.io/docs/collector/configuration/).
+
+The `debug` exporter and `DEBUG` Collector logs are useful for learning, but they are noisy and should not be copied as production defaults. [See the official Collector exporter documentation](https://opentelemetry.io/docs/collector/components/exporter/).
+
+The LGTM container has no persistence volume and this compose file has no health checks. That keeps the demo small, but telemetry data is ephemeral and readiness is verified manually. [See the official Grafana Docker OpenTelemetry LGTM documentation](https://grafana.com/docs/opentelemetry/docker-lgtm/).
 
 ### Seemingly double metrics
 
